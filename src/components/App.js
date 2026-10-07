@@ -1,36 +1,35 @@
-
 import React, { useState } from "react";
 
-const data = [
+const list = [
   {
     name: "Madhya Pradesh",
-    description: "Heart of India",
+    description: "Madhya Pradesh is a state in central India.",
     cities: [
       {
         name: "Bhopal",
-        description: "The capital city of Madhya Pradesh",
+        description: "Bhopal is the capital city of Madhya Pradesh.",
         landmarks: [
           {
             name: "Upper Lake",
-            description: "A beautiful lake in Bhopal",
+            description: "Upper Lake is a famous lake in Bhopal.",
           },
           {
             name: "Sanchi Stupa",
-            description: "A famous Buddhist monument",
+            description: "Sanchi Stupa is a famous Buddhist monument.",
           },
         ],
       },
       {
         name: "Indore",
-        description: "The largest city of Madhya Pradesh",
+        description: "Indore is a major city of Madhya Pradesh.",
         landmarks: [
           {
             name: "Rajwada Palace",
-            description: "A historic palace in Indore",
+            description: "Rajwada Palace is a historic palace in Indore.",
           },
           {
             name: "Lal Bagh Palace",
-            description: "A beautiful historical palace",
+            description: "Lal Bagh Palace is a historic palace in Indore.",
           },
         ],
       },
@@ -38,33 +37,33 @@ const data = [
   },
   {
     name: "Maharashtra",
-    description: "A state in western India",
+    description: "Maharashtra is a state in western India.",
     cities: [
       {
         name: "Mumbai",
-        description: "The capital city of Maharashtra",
+        description: "Mumbai is the capital city of Maharashtra.",
         landmarks: [
           {
             name: "Gateway of India",
-            description: "A famous monument in Mumbai",
+            description: "Gateway of India is a famous monument in Mumbai.",
           },
           {
             name: "Marine Drive",
-            description: "A famous seaside promenade",
+            description: "Marine Drive is a famous coastal road in Mumbai.",
           },
         ],
       },
       {
         name: "Pune",
-        description: "A major city in Maharashtra",
+        description: "Pune is a major city in Maharashtra.",
         landmarks: [
           {
             name: "Shaniwar Wada",
-            description: "A historic fortification",
+            description: "Shaniwar Wada is a historic fortification in Pune.",
           },
           {
             name: "Aga Khan Palace",
-            description: "A historic palace in Pune",
+            description: "Aga Khan Palace is a historic landmark in Pune.",
           },
         ],
       },
@@ -73,81 +72,332 @@ const data = [
 ];
 
 function App() {
-  const [selectedState, setSelectedState] = useState(0);
-  const [selectedCity, setSelectedCity] = useState(0);
-  const [selectedLandmark, setSelectedLandmark] = useState(0);
+  const [stateIndex, setStateIndex] = useState(0);
+  const [cityIndex, setCityIndex] = useState(0);
+  const [landmarkIndex, setLandmarkIndex] = useState(0);
 
-  const state = data[selectedState];
-  const city = state.cities[selectedCity];
-  const landmark = city.landmarks[selectedLandmark];
+  // Selected State
+  const selectedState = list[stateIndex];
 
-  const handleStateChange = (e) => {
-    setSelectedState(Number(e.target.value));
-    setSelectedCity(0);
-    setSelectedLandmark(0);
+  // Cities belonging to selected State
+  const cities = selectedState.cities;
+
+  // Selected City
+  const selectedCity = cities[cityIndex];
+
+  // Landmarks belonging to selected City
+  const landmarks = selectedCity.landmarks;
+
+  // Selected Landmark
+  const selectedLandmark = landmarks[landmarkIndex];
+
+  // State change
+  const handleStateChange = (event) => {
+    const newStateIndex = Number(event.target.value);
+
+    setStateIndex(newStateIndex);
+
+    // Reset dependent dropdowns
+    setCityIndex(0);
+    setLandmarkIndex(0);
   };
 
-  const handleCityChange = (e) => {
-    setSelectedCity(Number(e.target.value));
-    setSelectedLandmark(0);
+  // City change
+  const handleCityChange = (event) => {
+    const newCityIndex = Number(event.target.value);
+
+    setCityIndex(newCityIndex);
+
+    // Reset dependent dropdown
+    setLandmarkIndex(0);
   };
 
-  const handleLandmarkChange = (e) => {
-    setSelectedLandmark(Number(e.target.value));
+  // Landmark change
+  const handleLandmarkChange = (event) => {
+    setLandmarkIndex(Number(event.target.value));
   };
 
   return (
     <div>
-      {/* State */}
+      {/* STATE */}
+
       <select
         id="state"
-        value={selectedState}
+        value={stateIndex}
         onChange={handleStateChange}
       >
-        {data.map((item, index) => (
-          <option key={index} value={index}>
-            {item.name}
+        {list.map((state, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {state.name}
           </option>
         ))}
       </select>
 
-      <div id="state-name">{state.name}</div>
-      <div id="state-description">{state.description}</div>
+      <div id="state-name">
+        {selectedState.name}
+      </div>
 
-      {/* City */}
+      <div id="state-description">
+        {selectedState.description}
+      </div>
+
+
+      {/* CITY */}
+
       <select
         id="city"
-        value={selectedCity}
+        value={cityIndex}
         onChange={handleCityChange}
       >
-        {state.cities.map((item, index) => (
-          <option key={index} value={index}>
-            {item.name}
+        {cities.map((city, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {city.name}
           </option>
         ))}
       </select>
 
-      <div id="city-name">{city.name}</div>
-      <div id="city-description">{city.description}</div>
+      <div id="city-name">
+        {selectedCity.name}
+      </div>
 
-      {/* Landmark */}
+      <div id="city-description">
+        {selectedCity.description}
+      </div>
+
+
+      {/* LANDMARK */}
+
       <select
         id="landmark"
-        value={selectedLandmark}
+        value={landmarkIndex}
         onChange={handleLandmarkChange}
       >
-        {city.landmarks.map((item, index) => (
-          <option key={index} value={index}>
-            {item.name}
+        {landmarks.map((landmark, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {landmark.name}
           </option>
         ))}
       </select>
 
-      <div id="landmark-name">{landmark.name}</div>
-      <div id="landmark-description">{landmark.description}</div>
+      <div id="landmark-name">
+        {selectedLandmark.name}
+      </div>
+
+      <div id="landmark-description">
+        {selectedLandmark.description}
+      </div>
+    </div>
+  );
+}
+
+export default App;import React, { useState } from "react";
+
+const list = [
+  {
+    name: "Madhya Pradesh",
+    description: "Madhya Pradesh is a state in central India.",
+    cities: [
+      {
+        name: "Bhopal",
+        description: "Bhopal is the capital city of Madhya Pradesh.",
+        landmarks: [
+          {
+            name: "Upper Lake",
+            description: "Upper Lake is a famous lake in Bhopal.",
+          },
+          {
+            name: "Sanchi Stupa",
+            description: "Sanchi Stupa is a famous Buddhist monument.",
+          },
+        ],
+      },
+      {
+        name: "Indore",
+        description: "Indore is a major city of Madhya Pradesh.",
+        landmarks: [
+          {
+            name: "Rajwada Palace",
+            description: "Rajwada Palace is a historic palace in Indore.",
+          },
+          {
+            name: "Lal Bagh Palace",
+            description: "Lal Bagh Palace is a historic palace in Indore.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Maharashtra",
+    description: "Maharashtra is a state in western India.",
+    cities: [
+      {
+        name: "Mumbai",
+        description: "Mumbai is the capital city of Maharashtra.",
+        landmarks: [
+          {
+            name: "Gateway of India",
+            description: "Gateway of India is a famous monument in Mumbai.",
+          },
+          {
+            name: "Marine Drive",
+            description: "Marine Drive is a famous coastal road in Mumbai.",
+          },
+        ],
+      },
+      {
+        name: "Pune",
+        description: "Pune is a major city in Maharashtra.",
+        landmarks: [
+          {
+            name: "Shaniwar Wada",
+            description: "Shaniwar Wada is a historic fortification in Pune.",
+          },
+          {
+            name: "Aga Khan Palace",
+            description: "Aga Khan Palace is a historic landmark in Pune.",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+function App() {
+  const [stateIndex, setStateIndex] = useState(0);
+  const [cityIndex, setCityIndex] = useState(0);
+  const [landmarkIndex, setLandmarkIndex] = useState(0);
+
+  // Selected State
+  const selectedState = list[stateIndex];
+
+  // Cities belonging to selected State
+  const cities = selectedState.cities;
+
+  // Selected City
+  const selectedCity = cities[cityIndex];
+
+  // Landmarks belonging to selected City
+  const landmarks = selectedCity.landmarks;
+
+  // Selected Landmark
+  const selectedLandmark = landmarks[landmarkIndex];
+
+  // State change
+  const handleStateChange = (event) => {
+    const newStateIndex = Number(event.target.value);
+
+    setStateIndex(newStateIndex);
+
+    // Reset dependent dropdowns
+    setCityIndex(0);
+    setLandmarkIndex(0);
+  };
+
+  // City change
+  const handleCityChange = (event) => {
+    const newCityIndex = Number(event.target.value);
+
+    setCityIndex(newCityIndex);
+
+    // Reset dependent dropdown
+    setLandmarkIndex(0);
+  };
+
+  // Landmark change
+  const handleLandmarkChange = (event) => {
+    setLandmarkIndex(Number(event.target.value));
+  };
+
+  return (
+    <div>
+      {/* STATE */}
+
+      <select
+        id="state"
+        value={stateIndex}
+        onChange={handleStateChange}
+      >
+        {list.map((state, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {state.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="state-name">
+        {selectedState.name}
+      </div>
+
+      <div id="state-description">
+        {selectedState.description}
+      </div>
+
+
+      {/* CITY */}
+
+      <select
+        id="city"
+        value={cityIndex}
+        onChange={handleCityChange}
+      >
+        {cities.map((city, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {city.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="city-name">
+        {selectedCity.name}
+      </div>
+
+      <div id="city-description">
+        {selectedCity.description}
+      </div>
+
+
+      {/* LANDMARK */}
+
+      <select
+        id="landmark"
+        value={landmarkIndex}
+        onChange={handleLandmarkChange}
+      >
+        {landmarks.map((landmark, index) => (
+          <option
+            key={index}
+            value={index}
+          >
+            {landmark.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="landmark-name">
+        {selectedLandmark.name}
+      </div>
+
+      <div id="landmark-description">
+        {selectedLandmark.description}
+      </div>
     </div>
   );
 }
 
 export default App;
-
